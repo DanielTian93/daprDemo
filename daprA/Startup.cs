@@ -1,6 +1,7 @@
 using daprA.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -46,12 +47,22 @@ namespace daprA
 
             app.UseHttpsRedirection();
 
+            app.Use((context, next) =>
+            {
+                context.Request.EnableBuffering();
+                return next();
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
 
+
+
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapSubscribeHandler();
                 endpoints.MapGrpcService<GrpcService>();
                 endpoints.MapControllers();
             });
