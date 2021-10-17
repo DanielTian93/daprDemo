@@ -35,6 +35,17 @@ namespace daprA
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "daprA", Version = "v1" });
             });
+            #region ¿çÓò
+            services.AddCors(options =>
+            {
+                options.AddPolicy("any", builder =>
+                {
+                    builder.WithOrigins("*").AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,11 +65,9 @@ namespace daprA
             });
 
             app.UseRouting();
+            app.UseCors("any");
 
             app.UseAuthorization();
-
-
-
 
             app.UseEndpoints(endpoints =>
             {
