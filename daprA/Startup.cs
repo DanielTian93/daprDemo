@@ -1,9 +1,11 @@
+using Actors;
 using daprA.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,10 +33,16 @@ namespace daprA
 
             services.AddGrpc();
             services.AddControllers().AddDapr();
+            services.AddActors(options =>
+            {
+                options.Actors.RegisterActor<DemoActor>();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "daprA", Version = "v1" });
             });
+            RedisHelper.Initialization(csredis: new CSRedis.CSRedisClient("192.168.2.228:6379,password=,prefix=actor_,poolsize=2"));
+
             #region ¿çÓò
             services.AddCors(options =>
             {
@@ -69,11 +77,17 @@ namespace daprA
 
             app.UseAuthorization();
 
+
+
             app.UseEndpoints(endpoints =>
             {
+                //·¢²¼¶©ÔÄ
                 endpoints.MapSubscribeHandler();
+                //grpc
                 endpoints.MapGrpcService<GrpcService>();
                 endpoints.MapControllers();
+                //Actors
+                endpoints.MapActorsHandlers();
             });
         }
     }
