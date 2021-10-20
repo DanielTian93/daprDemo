@@ -140,7 +140,7 @@ namespace Actors
 
         public Task UnregisterReminder(string id)
         {
-            return this.UnregisterReminderAsync("TestReminder");
+            return this.UnregisterReminderAsync($"TestReminder{id}");
         }
 
 
