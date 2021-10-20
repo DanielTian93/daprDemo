@@ -24,5 +24,15 @@ namespace Actors
         /// </summary>
         /// <returns></returns>
         Task<bool> SkillOrder();
+
+
+        Task RegisterTimer(string id);
+        Task UnregisterTimer(string id);
+
+        Task RegisterReminder(string id);
+        Task UnregisterReminder(string id);
+
+
+
     }
 }

@@ -78,16 +78,55 @@ namespace daprA.Controllers.Actors
             var proxy = ActorProxy.Create<IDemoActor>(actorId, "DemoActor");
             var res = await proxy.SkillOrder();
             return Ok(res);
-            ////获取库存
-            //var inventoryNum = await RedisHelper.HGetAsync<long>("Skill", "InventoryNum");
-            //if (inventoryNum > 0)
-            //{
-            //    Thread.Sleep(TimeSpan.FromSeconds(3));
-            //    RedisHelper.HIncrBy("Skill", "InventoryNum", -1);
-            //    RedisHelper.HIncrBy("Skill", "OrderNum", 1);
-            //    return Ok(true);
-            //}
-            //return Ok(false);
         }
+
+
+        /// <summary>
+        /// 注册一个timer
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpGet("regist/timer/{orderId}")]
+        public async Task<ActionResult> TimerAsync(string orderId)
+        {
+            var actorId = new ActorId("timer-" + orderId);
+            var proxy = ActorProxy.Create<IDemoActor>(actorId, "DemoActor");
+            await proxy.RegisterTimer(orderId);
+            return Ok("done");
+        }
+
+
+        /// <summary>
+        /// 注销一个timer
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpGet("unregist/timer/{orderId}")]
+        public async Task<ActionResult> UnregistTimerAsync(string orderId)
+        {
+            var actorId = new ActorId("timer-" + orderId);
+            var proxy = ActorProxy.Create<IDemoActor>(actorId, "DemoActor");
+            await proxy.UnregisterTimer(orderId);
+            return Ok("done");
+        }
+
+        [HttpGet("reminder/{orderId}")]
+        public async Task<ActionResult> ReminderAsync(string orderId)
+        {
+            var actorId = new ActorId("actorprifix-" + orderId);
+            var proxy = ActorProxy.Create<IDemoActor>(actorId, "DemoActor");
+            await proxy.RegisterReminder(orderId);
+            return Ok("done");
+        }
+        [HttpGet("unregist/reminder/{orderId}")]
+        public async Task<ActionResult> UnregistReminderAsync(string orderId)
+        {
+            var actorId = new ActorId("actorprifix-" + orderId);
+            var proxy = ActorProxy.Create<IDemoActor>(actorId, "DemoActor");
+            await proxy.UnregisterReminder(orderId);
+            return Ok("done");
+        }
+
+
     }
 }
