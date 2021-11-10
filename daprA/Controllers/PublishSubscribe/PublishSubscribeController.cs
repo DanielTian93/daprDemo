@@ -41,8 +41,8 @@ namespace daprA.Controllers.PublishSubscribe
             _logger = logger;
             _daprClient = daprClient;
         }
-        const string Redis_PUB_SUN = "pubsubredis";
-        const string RBMQ_PUB_SUN = "pubsubrabbit";
+        const string Redis_PUB_SUN = "pubsub";
+        //const string RBMQ_PUB_SUN = "pubsubrabbit";
         const string Programmatic_TOPIC_NAME = "ProgrammaticTUANZI";
         const string Declarative_TOPIC_NAME = "DeclarativeTUANZI";
         /*
@@ -75,7 +75,7 @@ namespace daprA.Controllers.PublishSubscribe
         [HttpGet("DeclarativePub")]
         public async Task<ActionResult> DeclarativePubAsync()
         {
-            await _daprClient.PublishEventAsync(RBMQ_PUB_SUN, Declarative_TOPIC_NAME, $"RBMQ_Declarative:{Guid.NewGuid()}");
+            //await _daprClient.PublishEventAsync(RBMQ_PUB_SUN, Declarative_TOPIC_NAME, $"RBMQ_Declarative:{Guid.NewGuid()}");
             await _daprClient.PublishEventAsync(Redis_PUB_SUN, Declarative_TOPIC_NAME, $"Redis_Declarative:{Guid.NewGuid()}");
             return Ok();
         }
@@ -92,27 +92,27 @@ namespace daprA.Controllers.PublishSubscribe
             {
                 { "ttlInseconds","120"}
             };
-            await _daprClient.PublishEventAsync(RBMQ_PUB_SUN, Programmatic_TOPIC_NAME, $"RBMQ_Programmatic:{Guid.NewGuid()}", metadata: dictionary);
+            //await _daprClient.PublishEventAsync(RBMQ_PUB_SUN, Programmatic_TOPIC_NAME, $"RBMQ_Programmatic:{Guid.NewGuid()}", metadata: dictionary);
             await _daprClient.PublishEventAsync(Redis_PUB_SUN, Programmatic_TOPIC_NAME, $"Redis_Programmatic:{Guid.NewGuid()}");
             return Ok();
         }
 
-        /// <summary>
-        /// 编程式订阅
-        /// </summary>
-        /// <returns></returns>
-        [Topic(RBMQ_PUB_SUN, Programmatic_TOPIC_NAME)]
-        [HttpPost("ProgrammaticRBMQSub")]
-        public async Task<ActionResult> RBMQProgrammaticSubAsync()
-        {
-            Stream stream = Request.Body;
-            byte[] buffer = new byte[Request.ContentLength.Value];
-            stream.Position = 0L;
-            await stream.ReadAsync(buffer);
-            string content = Encoding.UTF8.GetString(buffer);
-            _logger.LogInformation("RBMQProgrammaticSub:" + content);
-            return Ok(content);
-        }
+        ///// <summary>
+        ///// 编程式订阅
+        ///// </summary>
+        ///// <returns></returns>
+        //[Topic(RBMQ_PUB_SUN, Programmatic_TOPIC_NAME)]
+        //[HttpPost("ProgrammaticRBMQSub")]
+        //public async Task<ActionResult> RBMQProgrammaticSubAsync()
+        //{
+        //    Stream stream = Request.Body;
+        //    byte[] buffer = new byte[Request.ContentLength.Value];
+        //    stream.Position = 0L;
+        //    await stream.ReadAsync(buffer);
+        //    string content = Encoding.UTF8.GetString(buffer);
+        //    _logger.LogInformation("RBMQProgrammaticSub:" + content);
+        //    return Ok(content);
+        //}
 
         /// <summary>
         /// 编程式订阅
