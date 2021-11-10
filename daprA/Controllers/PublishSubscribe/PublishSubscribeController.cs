@@ -41,7 +41,7 @@ namespace daprA.Controllers.PublishSubscribe
             _logger = logger;
             _daprClient = daprClient;
         }
-        const string Redis_PUB_SUN = "pubsub";
+        const string Redis_PUB_SUN = "pubsubredis";
         //const string RBMQ_PUB_SUN = "pubsubrabbit";
         const string Programmatic_TOPIC_NAME = "ProgrammaticTUANZI";
         const string Declarative_TOPIC_NAME = "DeclarativeTUANZI";
