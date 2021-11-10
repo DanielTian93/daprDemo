@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  dapra:
+    image: ${DOCKER_REGISTRY-}dapra
+    build:
+      context: .
+      dockerfile: daprA/Dockerfile
+    ports:
+      - "6500:80"  
+      - "50000:50001"
+
+  dapra-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd","-app-id","dapra","-app-port","80"]
+    depends_on:
+        - dapra
+    network_mode: "service:dapra"
+
+  daprb:
+    image: ${DOCKER_REGISTRY-}daprb
+    build:
+      context: .
+      dockerfile: daprB/Dockerfile
+    ports:
+      - "6600:80"
+      - "51000:50001"
+
+  daprb-dapr:
+    image: "daprio/daprd:latest"
+    command: ["./daprd","-app-id","daprb","-app-port","80"]
+    depends_on:
+        - daprb
+    network_mode: "service:daprb"

@@ -41,7 +41,7 @@ namespace daprA
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "daprA", Version = "v1" });
             });
-            RedisHelper.Initialization(csredis: new CSRedis.CSRedisClient("192.168.2.228:6379,password=,prefix=actor_,poolsize=2"));
+            RedisHelper.Initialization(csredis: new CSRedis.CSRedisClient("192.168.2.230:31965,password=N0WPoW2GXN,prefix=actor_,poolsize=2"));
 
             #region ¿çÓò
             services.AddCors(options =>
