@@ -19,7 +19,7 @@ namespace daprA.Controllers.StateManagement.Controller
         /// <summary>
         /// 存储组件名称
         /// </summary>
-        const string Redis_STATE_STORE = "statestore";
+        const string Redis_STATE_STORE = "redisstatestore";
         //const string Mysql_STATE_STORE = "mysqlstatestore";
         const string KEY_NAME = "TUANZI";
 
@@ -30,6 +30,7 @@ namespace daprA.Controllers.StateManagement.Controller
         [HttpPost("RedisStateStoreStrong")]
         public async Task<ActionResult> RedisStateStoreStrongAsync()
         {
+            Console.Write(Redis_STATE_STORE);
             await _daprClient.SaveStateAsync(Redis_STATE_STORE, KEY_NAME, Guid.NewGuid().ToString(), new StateOptions() { Consistency = ConsistencyMode.Strong });
             return Ok();
         }
