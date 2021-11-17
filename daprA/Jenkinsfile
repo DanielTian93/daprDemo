@@ -1,0 +1,5 @@
+﻿#!/usr/bin/env groovy
+
+@Library('share@master') _
+
+run 'dapr-demo', 'dapra', './daprA/', '80', '31934', ['dev':'*/master', 'prod':'*/master']
